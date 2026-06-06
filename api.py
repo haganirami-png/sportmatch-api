@@ -53,6 +53,12 @@ def search():
                 sim = min(100, sim + 20)
             pid = p.get("player_id", "")
             mins = MINUTES.get(pid, {})
+            if not mins:
+                name_he = p.get("שם", "")
+                for m in MINUTES.values():
+                    if m.get("name", "") == name_he:
+                        mins = m
+                        break
             results.append({
                 "name": p.get("שם"),
                 "team": p.get("קבוצה", ""),
