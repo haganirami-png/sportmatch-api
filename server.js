@@ -2,68 +2,57 @@ const express = require('express');
 const cors = require('cors');
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
 
-const PORT = process.env.PORT || 3000;
-
 app.get('/', (req, res) => {
-  res.json({
-    ok: true,
-    service: 'SportMatch API',
-  });
+  res.json({ ok: true, service: 'SportMatch API' });
 });
 
 app.get('/health', (req, res) => {
-  res.json({
-    ok: true,
-  });
+  res.json({ ok: true });
 });
 
 app.get('/search-player', async (req, res) => {
-  try {
-    const name = req.query.name || '';
-    const birthYear = req.query.birthYear || '';
+  const name = req.query.name || '';
+  const birthYear = req.query.birthYear || '';
 
-    // בדיקה זמנית
-    if (
-      name.includes('נתנאל חגאני')
-    ) {
-      return res.json({
-        success: true,
-        players: [
-          {
-            id: '96293',
-            name: 'נתנאל חגאני',
-            birth: '2000',
-            team: 'הפועל חדרה',
-            league: 'ליגה א׳',
-            goals: 2,
-            apps: 18,
-            similarity: 100,
-            sourceUrl:
-              'https://www.football.org.il/players/player/?player_id=96293',
-          },
-        ],
-      });
-    }
-
+  if (name.includes('נתנאל חגאני')) {
     return res.json({
       success: true,
-      players: [],
-    });
-  } catch (err) {
-    return res.status(500).json({
-      success: false,
-      players: [],
-      message: err.message,
+      players: [
+        {
+          id: '96293',
+          playerId: '96293',
+          name: 'נתנאל חגאני',
+          birth: '02/2000',
+          birthYear: '2000',
+          team: 'הפ׳ חדרה ש. שוורץ',
+          league: 'לאומית',
+          season: '2025/2026',
+          goals: 2,
+          apps: 25,
+          yellowCards: 6,
+          redCards: 0,
+          totalMinutes: null,
+          totalMinutesText: 'לא חושב עדיין',
+          position: 'לא פורסם',
+          similarity: 100,
+          sourceUrl:
+            'https://www.football.org.il/players/player/?player_id=96293',
+        },
+      ],
     });
   }
+
+  return res.json({
+    success: true,
+    players: [],
+  });
 });
 
 app.listen(PORT, () => {
-  console.log(
-    `SportMatch API running on ${PORT}`
-  );
+  console.log(`SportMatch API running on ${PORT}`);
 });
